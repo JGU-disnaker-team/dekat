@@ -10,13 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('mitras', function (Blueprint $table) {
+        Schema::create('layanans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('nama');
+            $table->decimal('harga', 10, 2);
+            $table->boolean('garansi')->default(false);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('mitras');
+        Schema::dropIfExists('layanans');
     }
 };

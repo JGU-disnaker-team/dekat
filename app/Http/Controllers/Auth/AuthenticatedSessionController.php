@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -21,16 +23,22 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     *
+     * This method authenticates the user, regenerates the session, and redirects
+     * the user to the intended location, which is the dashboard in this case.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+            $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
-    }
+            return redirect()->intended('dashboard');
+        }
 
+    /**
+     * Log out the authenticated user, invalidate the session, and regenerate the CSRF token.
+     */
     /**
      * Destroy an authenticated session.
      */

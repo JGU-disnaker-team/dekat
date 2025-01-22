@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('detail_transaksis', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->uuid('id_transaksi');
-            $table->uuid('id_layanan');
-            $table->uuid('id_jasa');
+            $table->id('id');
+            $table->id('id_transaksi');
+            $table->id('id_layanan');
+            $table->id('id_jasa');
             $table->decimal('harga_satuan', 15, 2);
             $table->string('status')->default('pending');
             $table->boolean('status_garansi')->default(false);

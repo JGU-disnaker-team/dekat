@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('transaksis', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->id('id');
             $table->date('date');
             $table->decimal('total', 15, 2);
             $table->timestamps();

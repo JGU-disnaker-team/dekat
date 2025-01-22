@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('vouchers', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->id('id');
             $table->string('nama');
             $table->decimal('diskon', 5, places: 2);
             $table->uuid('user_id');

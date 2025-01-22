@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('vouchers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->string('nama');
             $table->decimal('diskon', 5, places: 2);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

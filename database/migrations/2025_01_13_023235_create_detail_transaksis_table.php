@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('detail_transaksis', function (Blueprint $table) {
             $table->uuid('id');
-            $table->foreignId('id_transaksi')->constrained('transaksis')->onDelete('cascade');
-            $table->foreignId('id_layanan')->nullable()->constrained('layanans')->onDelete('set null');
-            $table->foreignId('id_jasa')->nullable()->constrained('jasa')->onDelete('set null');
+            $table->uuid('id_transaksi');
+            $table->uuid('id_layanan');
+            $table->uuid('id_jasa');
             $table->decimal('harga_satuan', 15, 2);
             $table->string('status')->default('pending');
             $table->boolean('status_garansi')->default(false);

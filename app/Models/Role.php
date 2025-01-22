@@ -1,17 +1,13 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Permission\Models\Permission as SpatiePermission;
+use Spatie\Permission\Models\Role as SpatieRole;
 
-class Role extends SpatiePermission
+class Role extends SpatieRole
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasUuids;
-
-    protected $primarykey = [
-        'uuid',
-    ];
+    use HasFactory;
+    use HasUuids;
+    protected $primaryKey = 'uuid';
 }

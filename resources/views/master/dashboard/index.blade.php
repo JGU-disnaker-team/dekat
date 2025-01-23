@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-<title>{{ config('app.name', 'Dekat App') }} | {{ __('Dashboard') }}</title>
+<title>{{ config('app.name', 'Pemira HMJTK POLBAN') }} | {{ __('Dashboard') }}</title>
 @endsection
 
 @section('section-head')

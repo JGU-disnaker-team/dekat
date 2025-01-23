@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('title')
-<title>{{ config('app.name', 'Pemira HMJTK POLBAN') }} | {{ __('Login') }}</title>
+<title>{{ config('app.name', 'Dekat App') }} | {{ __('Login') }}</title>
 @endsection
 
 @section('content')

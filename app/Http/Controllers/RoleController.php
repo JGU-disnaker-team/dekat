@@ -46,15 +46,15 @@ class RoleController extends Controller
     {
         try {
             Role::create([
-                'name' => strtolower(str_replace(" ", "-", $request->name)),
-                'description' => $request->description,
+                'name' => strtolower(str_replace(" ", "-", $request->input('name'))),
+                'description' => $request->input('description'),
                 'guard_name' => 'web'
             ]);
 
             Alert::success('Congrats', 'You\'ve Successfully Created');
             return redirect()->route('role.index');
-        } catch (\Exception $excep) {
-            Log::error('Error Adding Role: ' . $excep->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Error Adding Role: ' . $e->getMessage());
 
             Alert::error('Error', 'An error occurred while adding the Role.');
             return redirect()->back()->withInput();

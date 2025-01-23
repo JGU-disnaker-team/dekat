@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -14,12 +12,9 @@ use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $title = "Roles - Data";
+        $title = "Role - Data";
 
         $confTitle = 'Delete Subject Data!';
         $confText = "Are you sure you want to delete?";
@@ -29,56 +24,43 @@ class RoleController extends Controller
         return view('master.role.index', compact('title'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $title = "Roles - Create";
+        $title = "Role - Create";
 
         return view('master.role.create', compact('title'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request)
     {
         try {
             Role::create([
-                'name' => strtolower(str_replace(" ", "-", $request->input('name'))),
-                'description' => $request->input('description'),
+                'name' => strtolower(str_replace(" ", "-", $request->name)),
                 'guard_name' => 'web'
             ]);
 
             Alert::success('Congrats', 'You\'ve Successfully Created');
             return redirect()->route('role.index');
-        } catch (\Exception $e) {
-            Log::error('Error Adding Role: ' . $e->getMessage());
+        } catch (\Exception $excep) {
+            Log::error('Error Adding Role: ' . $excep->getMessage());
 
-            Alert::error('Error', 'An error occurred while adding the Role.');
+            Alert::error('Error', 'An error occurred while adding the role.');
             return redirect()->back()->withInput();
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         try {
-            $title = "Roles - Edit";
+            $title = "Role - Edit";
 
-            $roleId = Crypt::decrypt($id);
-            $data = Role::findOrFail($roleId);
+            $userId = Crypt::decrypt($id);
+            $data = Role::find($userId);
 
             return view('master.role.edit', compact('title', 'data'));
         } catch (DecryptException $decryptExcep) {
@@ -87,18 +69,14 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateRoleRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         try {
             $roleId = Crypt::decrypt($id);
             $role = Role::findOrFail($roleId);
 
             $role->update([
-                'name' => strtolower(str_replace(" ", "-", $request->name)),
-                'description' => $request->description
+                'name' => strtolower(str_replace(" ", "-", $request->name))
             ]);
 
             Alert::success('Congrats', 'You\'ve Successfully Updated');
@@ -114,9 +92,6 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         try {
@@ -131,32 +106,17 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function data()
     {
-        $data = Role::withCount(['users', 'permissions'])
-                    ->get()
-                    ->map(function($role) {
-                        $role->uuid = Crypt::encrypt($role->uuid);
-
-                        return $role;
-                    });
+        $data = Role::latest()->get();
 
         return DataTables::of($data)
-                        ->editColumn('name', function($item) {
-                            $words = explode(" ", str_replace("-", " ", $item->name));
-
-                            $processedWords = array_map(function ($word) {
-                                return preg_match('/[aeiou]/i', $word) ? ucwords($word) : strtoupper($word);
-                            }, $words);
-
-                            return implode(" ", $processedWords);
-                        })
-                        ->editColumn('guard_name', function($item) {
-                            return ucwords($item->guard_name);
-                        })
-                        ->make(true);
+            ->addIndexColumn()
+            ->editColumn('name', function ($item) {
+                return ucwords(str_replace("-", " ", $item->name));
+            })
+            ->addColumn('action', 'master.role.action')
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

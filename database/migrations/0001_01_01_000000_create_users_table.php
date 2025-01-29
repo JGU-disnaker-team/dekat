@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('no_telp', 15)->nullable();
             $table->string('password');
+            $table->string('role')->default('user');
             $table->text('alamat')->nullable();
             $table->string('kode_pos', 10)->nullable();
             $table->string('kelurahan')->nullable();

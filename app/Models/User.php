@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'no_telp',
         'password',
+        'role',
         'alamat',
         'kode_pos',
         'kelurahan',
